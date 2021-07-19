@@ -134,6 +134,7 @@ print(genrestopten_5)
 
 # Generate a bar graph of the top ten genres of rated movies from past 5 years
 genrestopten_5.plot(kind='bar', x='Genre', y='imdbID')
+plt.xticks(rotation=45)
 plt.title('Top 10 genres of movies produced in last 5 years')
 plt.savefig('genrestopten_5.png')
 
@@ -142,6 +143,7 @@ print(genrestopten_rated)
 
 # Generate a bar graph of the top ten genres of all rated movies
 genrestopten_rated.plot(kind='bar', x='Genre', y='imdbID')
+plt.xticks(rotation=45)
 plt.title('Top 10 genres of movies produced with ratings available')
 plt.savefig('genrestopten_rated.png')
 
@@ -150,6 +152,7 @@ print(genrestopten_all_movies)
 
 # Generate a bar graph of the top ten genres of all rated movies
 genrestopten_all_movies.plot(kind='bar', x='Genre', y='imdbID')
+plt.xticks(rotation=45)
 plt.title('Top 10 genres of all movies produced')
 plt.savefig('genrestopten_allmovies.png')
 
@@ -190,7 +193,9 @@ print(movies_genres_by_year)
 # Plot movies_genres_by_year
 fig, ax = plt.subplots()
 fig.set_size_inches (20,10)
-sns.lineplot(data=movies_genres_by_year, x="Year", y='imdbID', hue='Genre')
+sns.set_theme(style="whitegrid")
+sns.lineplot(data=movies_genres_by_year, x="Year", y='imdbID', hue='Genre', palette='tab10')
+plt.title("Number of rated movies by Genre")
 plt.show()
 plt.savefig('Seaborn_plot_genre_by_year.png')
 
@@ -201,8 +206,11 @@ print(movies_genres_rating_by_year)
 # Plot movies_genres_rating_by_year
 fig, ax = plt.subplots()
 fig.set_size_inches (20,10)
-sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre')
+sns.set_theme(style="whitegrid")
+sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre', palette='tab10')
+plt.title("Average ratings by Genre")
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
+
 
 
