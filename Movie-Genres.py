@@ -43,6 +43,12 @@ print(movies_data.head())
 print(movies_data.info())
 print(movies_data.describe())
 
+# Check for null values in the key colums: Year, imdbRating and Genre
+print(movies_data.isna().sum())
+
+# Find what % of data is null for each column
+print(movies_data.isna().sum() * 100 / len(movies_data))
+
 # Year in movies_data has Dtype object; identify what data types are in the year column
 # The following function checks if the year is an integer and if not store in a dictionary for cleaning
 
