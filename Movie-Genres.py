@@ -212,5 +212,3 @@ plt.title("Average ratings by Genre")
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
 
-
-
