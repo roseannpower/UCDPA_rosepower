@@ -1,6 +1,5 @@
 # import numpy and pandas for data analysis
 import os
-
 import numpy as np
 import pandas as pd
 
@@ -13,10 +12,7 @@ import seaborn as sns
 genres = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Genres.csv")
 movies = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Movies.csv")
 
-
 # print first few lines to understand structure of files and use .info to know more about the columns of each file
-
-
 print("Data from genres file:")
 print(genres.head(n=2))
 print(genres.info())
@@ -26,7 +22,6 @@ print("Data from movies file:")
 print(movies.head(n=2))
 print(movies.info())
 print(movies.shape)
-
 
 # drop columns that are not required from each file
 genres_cleaned = genres.drop(['Unnamed: 0'], axis=1)
@@ -40,10 +35,10 @@ print(genres_cleaned.info())
 print("Number of duplicates in genres file is:" + str(genres_cleaned.duplicated().sum()))
 print("Number of duplicates in movies file is:" + str(movies_cleaned.duplicated().sum()))
 
-
 # merge files to create one dataframe with all info
 movies_data = movies_cleaned.merge(genres_cleaned, on='imdbID')
 
+# print information about the new dataframe
 print(movies_data.head())
 print(movies_data.info())
 print(movies_data.describe())
@@ -101,22 +96,28 @@ print(movies_data['Genre'].unique())
 
 # The genre column is now clean
 
-# Identify the number of movies that fall into each genre in the past 5 years
+# Next identify the number of movies that fall into each genre in the past 5 years
 
 # Subset data to movies with imdb rating
 rated_movies = movies_data[movies_data['imdbRating'].notna()]
 print(rated_movies.info())
 
+# Check most recent year we have data for
 print(rated_movies['Year'].max())
 
-# Get subset of rated_movies from last 5 years
+# Count number of movies per year to see if 2018 should be included of if insufficient data available
+print(rated_movies['Year'].value_counts()) # 2018 should not be included
 
-print("max year for rated_movies is: " + str(rated_movies['Year'].max()))
-last_5_years = [2018, 2017, 2016, 2015, 2014]
+# Set values for last 5 years which can be reused
+last_5_years = [2017, 2016, 2015, 2014, 2013]
+
+# Get subset of rated_movies from last 5 years
 last_5_years_movies = rated_movies[rated_movies['Year'].isin(last_5_years)]
 
+# Check the info related to the movies from the last 5 years
 print(last_5_years_movies.head())
 print(last_5_years_movies.info())
+
 
 genres_5_years = last_5_years_movies.groupby('Genre').agg({'imdbID':'count'}).reset_index()
 genres_5_years_sorted= genres_5_years.sort_values(['imdbID'],ascending=False)
@@ -190,6 +191,6 @@ fig.set_size_inches (20,10)
 sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre')
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
-
+"""
 
 
