@@ -43,8 +43,6 @@ print(movies_data.head())
 print(movies_data.info())
 print(movies_data.describe())
 
-
-
 # Year in movies_data has Dtype object; identify what data types are in the year column
 # The following function checks if the year is an integer and if not store in a dictionary for cleaning
 
@@ -104,23 +102,18 @@ print(movies_data.isna().sum())
 # Find what % of data is null for each column
 print(movies_data.isna().sum() * 100 / len(movies_data))
 
+# Find what % of data is null for each genre
 null_by_genre = movies_data.groupby('Genre').agg({'imdbRating': lambda x: x.isnull().sum()}).reset_index()
 num_movies_by_genre = movies_data.groupby('Genre').agg({'imdbID': 'count'}).reset_index()
 null_by_genre_prec = null_by_genre.merge(num_movies_by_genre, on='Genre')
-null_by_genre_prec['Precent'] = null_by_genre_prec['imdbRating'] * 100 / null_by_genre_prec['imdbID']
-print(null_by_genre_prec.sort_values('imdbID', ascending = False))
+null_by_genre_prec['Percent'] = null_by_genre_prec['imdbRating'] * 100 / null_by_genre_prec['imdbID']
+print(null_by_genre_prec.sort_values(['imdbID'], ascending = False))
 
 # The data is now clean and ready for analysis.
 
 # Subset data to movies with imdb rating
 rated_movies = movies_data[movies_data['imdbRating'].notna()]
 print(rated_movies.info())
-
-# Check most recent year we have data for
-print(rated_movies['Year'].max())
-
-# Count number of movies per year to see if 2018 should be included of if insufficient data available
-print(rated_movies['Year'].value_counts()) # 2018 should not be included
 
 # Set values for last 5 years which can be reused
 last_5_years = [2017, 2016, 2015, 2014, 2013]
