@@ -115,36 +115,45 @@ last_5_years = [2017, 2016, 2015, 2014, 2013]
 last_5_years_movies = rated_movies[rated_movies['Year'].isin(last_5_years)]
 
 # Check the info related to the movies from the last 5 years
-print(last_5_years_movies.head())
 print(last_5_years_movies.info())
 
-
+# Identify top 10 genres from rated_movies in past 5 years based on number of movies
 genres_5_years = last_5_years_movies.groupby('Genre').agg({'imdbID':'count'}).reset_index()
-genres_5_years_sorted= genres_5_years.sort_values(['imdbID'],ascending=False)
-genrestopten_5 = genres_5_years_sorted.head(n=10)
+genrestopten_5= genres_5_years.sort_values(['imdbID'],ascending=False).head(n=10)
 
+# Identify top 10 genres from all rated_movies years based on number of movies
 genres_rated_movies = rated_movies.groupby('Genre').agg({'imdbID':'count'}).reset_index()
 genrestopten_rated = genres_rated_movies.sort_values(['imdbID'], ascending=False).head(n=10)
 
+# Identify top 10 genres from all movies (movies_data) based on number of movies
 genres_all_movies = movies_data.groupby('Genre').agg({'imdbID':'count'}).reset_index()
 genrestopten_all_movies = genres_all_movies.sort_values(['imdbID'], ascending=False).head(n=10)
 
+# Print the dataframe
 print(genrestopten_5)
+
+# Generate a bar graph of the top ten genres of rated movies from past 5 years
 genrestopten_5.plot(kind='bar', x='Genre', y='imdbID')
 plt.title('Top 10 genres of movies produced in last 5 years')
 plt.savefig('genrestopten_5.png')
 
+# Print the list of top ten genres of all rated movies
+print(genrestopten_rated)
+
+# Generate a bar graph of the top ten genres of all rated movies
 genrestopten_rated.plot(kind='bar', x='Genre', y='imdbID')
 plt.title('Top 10 genres of movies produced with ratings available')
 plt.savefig('genrestopten_rated.png')
 
+# Print the list of the top ten genres of all rated movies
 print(genrestopten_all_movies)
+
+# Generate a bar graph of the top ten genres of all rated movies
 genrestopten_all_movies.plot(kind='bar', x='Genre', y='imdbID')
 plt.title('Top 10 genres of all movies produced')
 plt.savefig('genrestopten_allmovies.png')
 
 # Create filter for the genres in the top 10 both overall and from the past 5 years, this is the data we wish to analyse
-
 genrefilter = []
 for genre in genrestopten_5['Genre']:
     if genre not in genrefilter:
@@ -158,11 +167,15 @@ for genre in genrestopten_all_movies['Genre']:
     else:
         genrefilter = genrefilter
 
+# Print the genre filter list
 print(genrefilter)
 
+# Add a new column to rated_movies to show which movies to keep
+# And add True of False based on if genre of movie is in the genre filter
 rated_movies['Keep'] = rated_movies['Genre'].apply(lambda genre : True if genre in genrefilter else False)
 
-# Create a new Dataframe to work with so that the general movies_data dataframe can be used for different analysis
+# Create a new Dataframe of rated movies with the Genres we wish to work with
+# to work with so that the general rated_movies dataframe can be used for different analysis
 rated_movies_analysis = rated_movies.loc[rated_movies['Keep']==True]
 
 print(rated_movies_analysis.info())
@@ -191,6 +204,5 @@ fig.set_size_inches (20,10)
 sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre')
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
-"""
 
 
