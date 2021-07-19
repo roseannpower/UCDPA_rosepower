@@ -43,11 +43,7 @@ print(movies_data.head())
 print(movies_data.info())
 print(movies_data.describe())
 
-# Check for null values in the key colums: Year, imdbRating and Genre
-print(movies_data.isna().sum())
 
-# Find what % of data is null for each column
-print(movies_data.isna().sum() * 100 / len(movies_data))
 
 # Year in movies_data has Dtype object; identify what data types are in the year column
 # The following function checks if the year is an integer and if not store in a dictionary for cleaning
@@ -102,7 +98,19 @@ print(movies_data['Genre'].unique())
 
 # The genre column is now clean
 
-# Next identify the number of movies that fall into each genre in the past 5 years
+# Check for null values in the key colums: Year, imdbRating and Genre
+print(movies_data.isna().sum())
+
+# Find what % of data is null for each column
+print(movies_data.isna().sum() * 100 / len(movies_data))
+
+null_by_genre = movies_data.groupby('Genre').agg({'imdbRating': lambda x: x.isnull().sum()}).reset_index()
+num_movies_by_genre = movies_data.groupby('Genre').agg({'imdbID': 'count'}).reset_index()
+null_by_genre_prec = null_by_genre.merge(num_movies_by_genre, on='Genre')
+null_by_genre_prec['Precent'] = null_by_genre_prec['imdbRating'] * 100 / null_by_genre_prec['imdbID']
+print(null_by_genre_prec.sort_values('imdbID', ascending = False))
+
+# The data is now clean and ready for analysis.
 
 # Subset data to movies with imdb rating
 rated_movies = movies_data[movies_data['imdbRating'].notna()]
@@ -217,4 +225,3 @@ sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='G
 plt.title("Average ratings by Genre")
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
-
