@@ -137,15 +137,11 @@ print(rated_movies.info())
 
 # Check max year and if there is sufficient data to include
 print(rated_movies['Year'].max())
-# movies_2018 = rated_movies[rated_movies['Year'] == 2018]
-numpy_array = rated_movies['Year'].to_numpy()
-print("Number of movies in 2017: " + str(np.count_nonzero(numpy_array == 2017)))
-print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2018)))
 
 # Convert 2018 year to a numpy array in order to carry out some calcuations
 numpy_array = rated_movies['Year'].to_numpy()
-print(numpy_array)
-
+print("Number of movies in 2017: " + str(np.count_nonzero(numpy_array == 2017)))
+print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2018)))
 
 # Set values for last 5 years which can be reused
 last_5_years = [2017, 2016, 2015, 2014, 2013]
@@ -243,6 +239,7 @@ print(movies_genres_rating_by_year)
 # Plot movies_genres_rating_by_year
 seaborn_plot()
 sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre', palette='tab10')
+sns.color_palette("Paired")
 plt.title("Average ratings by Genre")
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
 plt.show()
