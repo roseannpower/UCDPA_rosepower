@@ -129,6 +129,18 @@ print(null_by_genre_prec.sort_values(['imdbID'], ascending = False))
 rated_movies = movies_data[movies_data['imdbRating'].notna()]
 print(rated_movies.info())
 
+# Check max year and if there is sufficient data to include
+print(rated_movies['Year'].max())
+# movies_2018 = rated_movies[rated_movies['Year'] == 2018]
+numpy_array = rated_movies['Year'].to_numpy()
+print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2018)))
+print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2017)))
+
+# Convert 2018 year to a numpy array in order to carry out some calcuations
+numpy_array = rated_movies['Year'].to_numpy()
+print(numpy_array)
+
+
 # Set values for last 5 years which can be reused
 last_5_years = [2017, 2016, 2015, 2014, 2013]
 
