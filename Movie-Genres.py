@@ -7,6 +7,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Function to set seaborn plt area
+def seaborn_plot():
+    fig, ax = plt.subplots()
+    fig.set_size_inches(20, 10)
+    sns.set_theme(style="darkgrid")
+
 # import files to be used for analysis
 
 genres = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Genres.csv")
@@ -224,9 +230,7 @@ movies_genres_by_year = rated_movies_analysis_30years.groupby(['Year','Genre']).
 print(movies_genres_by_year)
 
 # Plot movies_genres_by_year
-fig, ax = plt.subplots()
-fig.set_size_inches (20,10)
-sns.set_theme(style="whitegrid")
+seaborn_plot()
 sns.lineplot(data=movies_genres_by_year, x="Year", y='imdbID', hue='Genre', palette='tab10')
 plt.title("Number of rated movies by Genre")
 plt.savefig('Seaborn_plot_genre_by_year.png')
@@ -237,10 +241,15 @@ movies_genres_rating_by_year = rated_movies_analysis_30years.groupby(['Year','Ge
 print(movies_genres_rating_by_year)
 
 # Plot movies_genres_rating_by_year
-fig, ax = plt.subplots()
-fig.set_size_inches (20,10)
-sns.set_theme(style="whitegrid")
+seaborn_plot()
 sns.lineplot(data=movies_genres_rating_by_year, x="Year", y='imdbRating', hue='Genre', palette='tab10')
 plt.title("Average ratings by Genre")
 plt.savefig('Seaborn_plot_genre_rating_by_year.png')
+plt.show()
+
+# Create a box plot to show imdbRating to show the distribution of ratings across the genres
+seaborn_plot()
+sns.boxplot(data=rated_movies_analysis_30years, x="Genre", y='imdbRating')
+plt.title("Movie ratings by Genre")
+plt.savefig('Seaborn_movie_rating_by_genre.png')
 plt.show()
