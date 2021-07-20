@@ -11,6 +11,7 @@ import seaborn as sns
 
 genres = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Genres.csv")
 movies = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Movies.csv")
+writers = pd.read_csv("/Users/rosepower/Desktop/UCD Data Analytics Course/Project/Data sets/Movie_Writer.csv")
 
 # print first few lines to understand structure of files and use .info to know more about the columns of each file
 print("Data from genres file:")
@@ -23,17 +24,30 @@ print(movies.head(n=2))
 print(movies.info())
 print(movies.shape)
 
+print("Data from writers file:")
+print(writers.head(n=2))
+print(writers.info())
+print(writers.shape)
+
 # drop columns that are not required from each file
 genres_cleaned = genres.drop(['Unnamed: 0'], axis=1)
 movies_cleaned = movies.drop(['Awards', 'DVD', 'Plot', 'Poster', 'Production', 'Rated', 'Website'], axis=1)
+writers_cleaned = writers.drop(['Unnamed: 0'], axis=1)
 
 # check that expected columns are dropped by checking the info again of movies and genre
 print(movies_cleaned.info())
 print(genres_cleaned.info())
+print(writers_cleaned.info())
 
 # Check for duplicates in each file
 print("Number of duplicates in genres file is:" + str(genres_cleaned.duplicated().sum()))
 print("Number of duplicates in movies file is:" + str(movies_cleaned.duplicated().sum()))
+print("Number of duplicates in writers file is:" + str(writers_cleaned.duplicated().sum()))
+
+# Drop duplicates from the writers file
+writers_drop_dup = writers_cleaned.drop_duplicates(keep='first')
+print("Number of duplicates in writers file is:" + str(writers_drop_dup.duplicated().sum()))
+print(writers_drop_dup.info())
 
 # merge files to create one dataframe with all info
 movies_data = movies_cleaned.merge(genres_cleaned, on='imdbID')
@@ -203,8 +217,8 @@ fig.set_size_inches (20,10)
 sns.set_theme(style="whitegrid")
 sns.lineplot(data=movies_genres_by_year, x="Year", y='imdbID', hue='Genre', palette='tab10')
 plt.title("Number of rated movies by Genre")
-plt.show()
 plt.savefig('Seaborn_plot_genre_by_year.png')
+plt.show()
 
 # Create a data set of genres by year displaying the mean imdbRating of each genre over the past 30 years
 movies_genres_rating_by_year = rated_movies_analysis_30years.groupby(['Year','Genre']).agg({'imdbRating':'mean'}).reset_index()
