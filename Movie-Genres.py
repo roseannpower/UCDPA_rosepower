@@ -49,7 +49,7 @@ writers_drop_dup = writers_cleaned.drop_duplicates(keep='first')
 print("Number of duplicates in writers file is:" + str(writers_drop_dup.duplicated().sum()))
 print(writers_drop_dup.info())
 
-# merge files to create one dataframe with all info
+# merge the movies and genre files to create one dataframe, writers not required for now
 movies_data = movies_cleaned.merge(genres_cleaned, on='imdbID')
 
 # print information about the new dataframe
