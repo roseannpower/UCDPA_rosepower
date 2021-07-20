@@ -133,8 +133,8 @@ print(rated_movies.info())
 print(rated_movies['Year'].max())
 # movies_2018 = rated_movies[rated_movies['Year'] == 2018]
 numpy_array = rated_movies['Year'].to_numpy()
+print("Number of movies in 2017: " + str(np.count_nonzero(numpy_array == 2017)))
 print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2018)))
-print("Number of movies in 2018: " + str(np.count_nonzero(numpy_array == 2017)))
 
 # Convert 2018 year to a numpy array in order to carry out some calcuations
 numpy_array = rated_movies['Year'].to_numpy()
